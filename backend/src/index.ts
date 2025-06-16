@@ -2,11 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoute";
 import blogRoute from "./routes/blogRoute";
+import cors from "cors";
 
 const app = express();
 const port = 3222;
 
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/blog")

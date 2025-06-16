@@ -7,6 +7,7 @@ import {
   getBlogs,
   getMyBlogs,
   modifyBlog,
+  removeBlog,
 } from "../services/blogService";
 import blogModel from "../models/blogModel";
 
@@ -96,6 +97,33 @@ router.put("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal server error");
+  }
+});
+
+router.delete("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
+  try {
+    const { blogId } = req.params;
+    const user = req.user;
+
+    if (!blogId) res.status(400).send("blogId is missing");
+
+    const blog = await blogModel.findById(blogId);
+
+    if (!blog) res.status(404).send("Blog not found");
+
+    const isOwner = blog?.authorId.toString() === user?._id.toString();
+    const isAdmin = user?.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      res.status(403).send("Unauthorized to remove this blog");
+    }
+
+    const { data, statusCode } = await removeBlog({ blogId });
+
+    res.status(statusCode).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

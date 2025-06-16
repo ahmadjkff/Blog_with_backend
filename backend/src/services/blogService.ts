@@ -96,3 +96,22 @@ export const modifyBlog = async ({ blogId, newBlog }: IModifyBlog) => {
     return { data: "Internal server error", statusCode: 500 };
   }
 };
+
+interface IRemoveBlog {
+  blogId: string;
+}
+
+export const removeBlog = async ({ blogId }: IRemoveBlog) => {
+  try {
+    const blog = await blogModel.findById(blogId);
+
+    if (!blog) return { data: "Blog is not found", statusCode: 400 };
+
+    await blog.deleteOne();
+
+    return { data: blog, statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+    return { data: "Something went wrong", statusCode: 500 };
+  }
+};

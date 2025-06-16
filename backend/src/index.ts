@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoute";
+import blogRoute from "./routes/blogRoute";
 
 const app = express();
 const port = 3222;
@@ -13,6 +14,7 @@ mongoose
   .catch((err) => console.error(err));
 
 app.use("/user", userRoute);
+app.use("/blog", blogRoute);
 
 app.listen(port, () => {
   console.log(`connected to port ${port}`);

@@ -12,17 +12,22 @@ interface RegisterBody {
 }
 
 router.post("/register", async (req, res) => {
-  const { username, email, password, role } = req.body as RegisterBody;
+  try {
+    const { username, email, password, role } = req.body as RegisterBody;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const { statusCode, data } = await register({
-    username,
-    email,
-    password: hashedPassword,
-    role,
-  });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const { statusCode, data } = await register({
+      username,
+      email,
+      password: hashedPassword,
+      role,
+    });
 
-  res.status(statusCode).send(data);
+    res.status(statusCode).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
+  }
 });
 
 interface LoginBody {
@@ -31,14 +36,19 @@ interface LoginBody {
 }
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body as LoginBody;
+  try {
+    const { username, password } = req.body as LoginBody;
 
-  const { statusCode, data } = await login({
-    username,
-    password,
-  });
+    const { statusCode, data } = await login({
+      username,
+      password,
+    });
 
-  res.status(statusCode).send(data);
+    res.status(statusCode).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
+  }
 });
 
 export default router;

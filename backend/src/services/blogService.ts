@@ -50,3 +50,23 @@ export const getMyBlogs = async ({ userId }: IGetMyBlogs) => {
     return { data: "Something went wrong", statusCode: 500 };
   }
 };
+
+interface IGetBlog {
+  blogId: string;
+}
+
+export const getBlog = async ({ blogId }: IGetBlog) => {
+  try {
+    if (!blogId) return { data: "blogId is missing", statusCode: 400 };
+
+    const blog = await blogModel.findById(blogId);
+
+    if (!blog)
+      return { data: "Blog with this id does not exist", statusCode: 400 };
+
+    return { data: blog, statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+    return { data: "Something went wrong", statusCode: 500 };
+  }
+};

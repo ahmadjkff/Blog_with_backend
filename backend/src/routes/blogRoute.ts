@@ -1,7 +1,12 @@
 import express from "express";
 import { validateJWT } from "../middlewares/validateJWT";
 import { IExtendRequest } from "../types/extendedRequest";
-import { addBlog, getBlogs, getMyBlogs } from "../services/blogService";
+import {
+  addBlog,
+  getBlog,
+  getBlogs,
+  getMyBlogs,
+} from "../services/blogService";
 
 const router = express.Router();
 
@@ -48,6 +53,18 @@ router.get("/my-blogs", validateJWT, async (req: IExtendRequest, res) => {
   } catch (error) {
     console.error(error);
 
+    res.status(500).send("Internal server error");
+  }
+});
+
+router.get("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
+  try {
+    const { blogId } = req.params;
+    const { data, statusCode } = await getBlog({ blogId });
+
+    res.status(statusCode).send(data);
+  } catch (error) {
+    console.error(error);
     res.status(500).send("Internal server error");
   }
 });

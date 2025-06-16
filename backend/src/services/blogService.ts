@@ -22,3 +22,31 @@ export const addBlog = async ({ title, content, authorId }: IAddBlogParams) => {
     return { data: "Something went wrong", statusCode: 500 };
   }
 };
+
+export const getBlogs = async () => {
+  try {
+    const blogs = await blogModel.find({});
+    return { data: blogs, statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+    return { data: "Something went wrong", statusCode: 500 };
+  }
+};
+
+interface IGetMyBlogs {
+  userId: string;
+}
+
+export const getMyBlogs = async ({ userId }: IGetMyBlogs) => {
+  try {
+    if (!userId) return { data: "User is not found", statusCode: 400 };
+
+    const myBlogs = await blogModel.find({ authorId: userId });
+
+    return { data: myBlogs, statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+
+    return { data: "Something went wrong", statusCode: 500 };
+  }
+};

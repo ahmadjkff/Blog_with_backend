@@ -9,20 +9,25 @@ interface RegisterParams {
   username: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export const register = async ({
   username,
   email,
   password,
+  role,
 }: RegisterParams) => {
   const findUser = await userModel.findOne({ username });
   if (findUser) return { data: "User Already exist", statusCode: 400 };
 
-  const newUser = new userModel({ username, email, password });
+  const newUser = new userModel({ username, email, password, role });
 
   await newUser.save();
-  return { statusCode: 201, data: generateJWT({ username, email, password }) };
+  return {
+    statusCode: 201,
+    data: generateJWT({ username, email, password, role }),
+  };
 };
 
 interface LoginParams {

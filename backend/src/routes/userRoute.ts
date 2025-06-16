@@ -8,16 +8,18 @@ interface RegisterBody {
   username: string;
   email: string;
   password: string;
+  role: string;
 }
 
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body as RegisterBody;
+  const { username, email, password, role } = req.body as RegisterBody;
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const { statusCode, data } = await register({
     username,
     email,
     password: hashedPassword,
+    role,
   });
 
   res.status(statusCode).send(data);

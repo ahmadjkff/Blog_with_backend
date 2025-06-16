@@ -70,3 +70,29 @@ export const getBlog = async ({ blogId }: IGetBlog) => {
     return { data: "Something went wrong", statusCode: 500 };
   }
 };
+
+interface IModifyBlog {
+  blogId: string;
+  newBlog: {
+    title?: string;
+    content?: string;
+    img?: string;
+  };
+}
+
+export const modifyBlog = async ({ blogId, newBlog }: IModifyBlog) => {
+  try {
+    const blog = await blogModel.findById(blogId);
+    if (!blog) return { data: "Blog not found", statusCode: 404 };
+
+    if (newBlog.title !== undefined) blog.title = newBlog.title;
+    if (newBlog.content !== undefined) blog.content = newBlog.content;
+    if (newBlog.img !== undefined) blog.img = newBlog.img;
+
+    await blog.save();
+    return { data: blog, statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+    return { data: "Internal server error", statusCode: 500 };
+  }
+};

@@ -6,7 +6,9 @@ import {
   getBlog,
   getBlogs,
   getMyBlogs,
+  modifyBlog,
 } from "../services/blogService";
+import blogModel from "../models/blogModel";
 
 const router = express.Router();
 
@@ -61,6 +63,34 @@ router.get("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
   try {
     const { blogId } = req.params;
     const { data, statusCode } = await getBlog({ blogId });
+
+    res.status(statusCode).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
+
+router.put("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
+  try {
+    const { blogId } = req.params;
+    const newBlog = req.body;
+    const user = req.user;
+
+    if (!blogId) res.status(400).send("blogId is missing");
+
+    const blog = await blogModel.findById(blogId);
+
+    if (!blog) res.status(404).send("Blog not found");
+
+    const isOwner = blog?.authorId.toString() === user?._id.toString();
+    const isAdmin = user?.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      res.status(403).send("Unauthorized to edit this blog");
+    }
+
+    const { data, statusCode } = await modifyBlog({ blogId, newBlog });
 
     res.status(statusCode).send(data);
   } catch (error) {

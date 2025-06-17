@@ -6,7 +6,7 @@ interface Blog {
   _id: string;
   title: string;
   content: string;
-  img?: string;
+  img?: string | undefined;
 }
 
 const BlogList = () => {
@@ -30,7 +30,9 @@ const BlogList = () => {
   return (
     <div className="flex flex-wrap gap-4 mt-32 justify-center sm:flex-col sm:items-center md:flex-row ">
       {blogs.length > 0 ? (
-        blogs.map((blog) => <Card key={blog._id} title={blog.title} />)
+        blogs.map((blog) => (
+          <Card key={blog._id} title={blog.title} blogImg={blog.img} />
+        ))
       ) : (
         <>No Blogs</>
       )}

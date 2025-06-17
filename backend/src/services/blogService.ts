@@ -5,15 +5,21 @@ interface IAddBlogParams {
   title: string;
   content: string;
   authorId: ObjectId | string;
+  img?: string;
 }
 
-export const addBlog = async ({ title, content, authorId }: IAddBlogParams) => {
+export const addBlog = async ({
+  title,
+  content,
+  authorId,
+  img,
+}: IAddBlogParams) => {
   try {
     if (!title || !content) {
       return { data: "Title and content are required", statusCode: 400 };
     }
 
-    const newBlog = await blogModel.create({ title, content, authorId });
+    const newBlog = await blogModel.create({ title, content, authorId, img });
 
     await newBlog.save();
     return { data: newBlog, statusCode: 201 };

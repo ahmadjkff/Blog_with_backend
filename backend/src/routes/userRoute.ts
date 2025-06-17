@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
       role,
     });
 
-    res.status(statusCode).send(data);
+    res.status(statusCode).send({ data });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Server error" });
@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
       password,
     });
 
-    res.status(statusCode).send(data);
+    res.status(statusCode).send({ data });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Server error" });

@@ -7,6 +7,7 @@ interface Blog {
   title: string;
   content: string;
   img?: string | undefined;
+  createdAt: string;
 }
 
 const BlogList = () => {
@@ -31,7 +32,12 @@ const BlogList = () => {
     <div className="flex flex-wrap gap-4 mt-32 justify-center sm:flex-col sm:items-center md:flex-row ">
       {blogs.length > 0 ? (
         blogs.map((blog) => (
-          <Card key={blog._id} title={blog.title} blogImg={blog.img} />
+          <Card
+            key={blog._id}
+            title={blog.title}
+            blogImg={blog.img}
+            createdAt={new Date(blog.createdAt).toLocaleDateString()}
+          />
         ))
       ) : (
         <>No Blogs</>

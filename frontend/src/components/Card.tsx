@@ -1,9 +1,10 @@
 interface ICardProps {
   title: string;
   blogImg?: string;
+  createdAt: string;
 }
 
-function Card({ title, blogImg }: ICardProps) {
+function Card({ title, blogImg, createdAt }: ICardProps) {
   return (
     <div className="flex flex-col w-[320px] p-5 border rounded-md hover:bg-gray-50 transition duration-200">
       <img src={blogImg} alt="placeholder" />
@@ -20,7 +21,7 @@ function Card({ title, blogImg }: ICardProps) {
           />
           <p className="mt-1">Author</p>
         </div>
-        <p>Date</p>
+        <p>{createdAt}</p>
       </div>
     </div>
   );

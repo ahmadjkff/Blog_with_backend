@@ -36,9 +36,6 @@ const Login = () => {
 
     const token = await response.json();
 
-    const decoded = jwtDecode(token) as { role: "admin" | "user" };
-    console.log(decoded.role); // "admin" or "user"
-
     if (!token) {
       setError("Incorrect token");
       return;
@@ -46,7 +43,7 @@ const Login = () => {
 
     setError("");
 
-    login(username, token, decoded.role);
+    login(username, token);
     navigate("/");
   };
 

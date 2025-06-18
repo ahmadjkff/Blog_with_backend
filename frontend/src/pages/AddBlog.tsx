@@ -10,7 +10,7 @@ const AddBlog = () => {
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
 
-    const response = await fetch("http://localhost:3222/blog/", {
+    const response = await fetch("http://localhost:3222/blog", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -21,6 +21,8 @@ const AddBlog = () => {
         content,
       }),
     });
+
+    if (!response.ok) return <>Unable to add new blog</>;
   };
 
   return (

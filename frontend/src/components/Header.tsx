@@ -5,7 +5,7 @@ import { useUser } from "../context/userContext";
 import AvatarDropdown from "./AvatarDropdown";
 
 function Header() {
-  const { isAuthenticated, isAdmin } = useUser();
+  const { isAuthenticated } = useUser();
   const onSearch = () => {};
 
   return (

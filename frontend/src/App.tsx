@@ -6,6 +6,7 @@ import { UserProvider } from "./context/userContext";
 import Profile from "./pages/Profile";
 import AddBlog from "./pages/AddBlog";
 import { BlogProvider } from "./context/BlogContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
             <Route path="/" element={<BlogList />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/add-blog" element={<AddBlog />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/add-blog" element={<AddBlog />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </BlogProvider>

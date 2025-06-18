@@ -38,7 +38,7 @@ router.post("/", validateJWT, isAdmin, async (req: IExtendRequest, res) => {
   }
 });
 
-router.get("/", validateJWT, async (req: IExtendRequest, res) => {
+router.get("/", async (req: IExtendRequest, res) => {
   try {
     const { data, statusCode } = await getBlogs();
 

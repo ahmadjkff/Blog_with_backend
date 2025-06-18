@@ -5,7 +5,7 @@ import { useUser } from "../context/userContext";
 import AvatarDropdown from "./AvatarDropdown";
 
 function Header() {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, isAdmin } = useUser();
   const onSearch = () => {};
 
   return (
@@ -39,7 +39,7 @@ function Header() {
         {isAuthenticated ? (
           <div className="flex gap-2 items-center text-blue-600">
             <AvatarDropdown />
-            <Link to={"/add-blog"}>Add Blog</Link>
+            {isAdmin && <Link to={"/add-blog"}>Add Blog</Link>}
           </div>
         ) : (
           <Link to={"/login"} className="text-blue-600">

@@ -1,32 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Card from "../components/Card";
+import { useBlog } from "../context/BlogContext";
 import { useUser } from "../context/userContext";
 
-interface Blog {
-  _id: string;
-  title: string;
-  content: string;
-  img?: string | undefined;
-  createdAt: string;
-}
-
 const BlogList = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const { token } = useUser();
+  const { isAdmin } = useUser();
+  const { fetchblogs, blogs } = useBlog();
 
   useEffect(() => {
-    const fetchblogs = async () => {
-      const response = await fetch(`http://localhost:3222/blog`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) return;
-
-      setBlogs(await response.json());
-    };
     fetchblogs();
-  }, []);
+  }, [blogs.length]);
+
+  console.log(isAdmin);
 
   return (
     <div className="flex flex-wrap gap-4 my-10 justify-center sm:flex-col sm:items-center md:flex-row ">

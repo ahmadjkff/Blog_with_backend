@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -6,8 +7,7 @@ interface UserContextType {
   token: string | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  role: string;
-  login: (username: string, token: string, role: "admin" | "user") => void;
+  login: (username: string, token: string) => void;
   logout: () => void;
 }
 
@@ -20,28 +20,27 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [role, setRole] = useState<string>(localStorage.getItem("role") || "");
+
+  const decoded = token
+    ? (jwtDecode(token) as { role: "admin" | "user" })
+    : { role: "user" };
 
   const isAuthenticated = !!token;
 
-  const isAdmin = role === "admin" ? true : false;
+  const isAdmin = decoded.role === "admin" ? true : false;
 
-  const login = (username: string, token: string, role: "admin" | "user") => {
+  const login = (username: string, token: string) => {
     setUsername(username);
     setToken(token);
-    setRole(role);
     localStorage.setItem("username", username);
     localStorage.setItem("token", token);
-    localStorage.setItem("role", role);
   };
 
   const logout = () => {
     setUsername(null);
     setToken(null);
-    setRole("");
     localStorage.removeItem("username");
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
   };
 
   return (
@@ -51,7 +50,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
         token,
         isAuthenticated,
         isAdmin,
-        role,
         login,
         logout,
       }}

@@ -29,11 +29,12 @@ const BlogList = () => {
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-4 mt-32 justify-center sm:flex-col sm:items-center md:flex-row ">
+    <div className="flex flex-wrap gap-4 my-10 justify-center sm:flex-col sm:items-center md:flex-row ">
       {blogs.length > 0 ? (
         blogs.map((blog) => (
           <Card
             key={blog._id}
+            id={blog._id}
             title={blog.title}
             blogImg={blog.img}
             createdAt={new Date(blog.createdAt).toLocaleDateString()}

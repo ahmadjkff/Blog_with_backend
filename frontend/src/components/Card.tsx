@@ -1,10 +1,24 @@
+import { useUser } from "../context/userContext";
+
 interface ICardProps {
   title: string;
   blogImg?: string;
   createdAt: string;
+  id: string;
 }
 
-function Card({ title, blogImg, createdAt }: ICardProps) {
+function Card({ title, blogImg, createdAt, id }: ICardProps) {
+  const { isAdmin, token } = useUser();
+
+  const handleDelete = async (id: string) => {
+    const response = await fetch(`http://localhost:3222/blog/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) return;
+  };
+
   return (
     <div className="flex flex-col w-[320px] p-5 border rounded-md hover:bg-gray-50 transition duration-200">
       <img src={blogImg} alt="placeholder" />
@@ -21,7 +35,17 @@ function Card({ title, blogImg, createdAt }: ICardProps) {
           />
           <p className="mt-1">Author</p>
         </div>
-        <p>{createdAt}</p>
+        <div className="flex flex-col gap-2">
+          <p>{createdAt}</p>
+          {isAdmin && (
+            <button
+              className="text-red-500 cursor-pointer"
+              onClick={() => handleDelete(id)}
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

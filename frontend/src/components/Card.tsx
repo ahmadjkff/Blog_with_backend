@@ -1,3 +1,4 @@
+import { useBlog } from "../context/BlogContext";
 import { useUser } from "../context/userContext";
 
 interface ICardProps {
@@ -9,12 +10,15 @@ interface ICardProps {
 
 function Card({ title, blogImg, createdAt, id }: ICardProps) {
   const { isAdmin, token } = useUser();
+  const { setBlogs, blogs } = useBlog();
 
   const handleDelete = async (id: string) => {
     const response = await fetch(`http://localhost:3222/blog/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
+    const otherblogs = blogs.filter((b) => b._id !== id);
+    setBlogs(otherblogs);
 
     if (!response.ok) return;
   };

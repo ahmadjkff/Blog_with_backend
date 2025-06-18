@@ -6,6 +6,7 @@ interface UserContextType {
   token: string | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  role: string;
   login: (username: string, token: string, role: "admin" | "user") => void;
   logout: () => void;
 }
@@ -19,7 +20,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [role, setRole] = useState<String | null>(null);
+  const [role, setRole] = useState<string>(localStorage.getItem("role") || "");
 
   const isAuthenticated = !!token;
 
@@ -31,13 +32,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setRole(role);
     localStorage.setItem("username", username);
     localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
   };
 
   const logout = () => {
     setUsername(null);
     setToken(null);
+    setRole("");
     localStorage.removeItem("username");
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   return (
@@ -47,6 +51,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         token,
         isAuthenticated,
         isAdmin,
+        role,
         login,
         logout,
       }}

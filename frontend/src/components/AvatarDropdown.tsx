@@ -5,7 +5,7 @@ import { useUser } from "../context/userContext";
 const AvatarDropdown: React.FC = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { logout } = useUser();
+  const { logout, isAdmin } = useUser();
 
   const toggleDropdown = () => setOpen(!open);
 
@@ -41,6 +41,11 @@ const AvatarDropdown: React.FC = () => {
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
               <Link to={"/profile"}>Profile</Link>
             </li>
+            {isAdmin && (
+              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <Link to={"/add-blog"}>Add Blog</Link>
+              </li>
+            )}
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={handleLogout}

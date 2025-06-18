@@ -39,7 +39,6 @@ function Header() {
         {isAuthenticated ? (
           <div className="flex gap-2 items-center text-blue-600">
             <AvatarDropdown />
-            {isAdmin && <Link to={"/add-blog"}>Add Blog</Link>}
           </div>
         ) : (
           <Link to={"/login"} className="text-blue-600">

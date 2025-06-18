@@ -31,7 +31,7 @@ export const addBlog = async ({
 
 export const getBlogs = async () => {
   try {
-    const blogs = await blogModel.find({});
+    const blogs = await blogModel.find({}).populate("authorId", "username");
     return { data: blogs, statusCode: 200 };
   } catch (error) {
     console.error(error);

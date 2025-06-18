@@ -16,6 +16,10 @@ interface Blog {
   content: string;
   img?: string | undefined;
   createdAt: string;
+  authorId: {
+    username: string;
+    _id: string;
+  };
 }
 
 export function BlogProvider({ children }: { children: ReactNode }) {
@@ -23,8 +27,6 @@ export function BlogProvider({ children }: { children: ReactNode }) {
   const { token } = useUser();
 
   const fetchblogs = async () => {
-    console.log("</BlogProvider>");
-
     const response = await fetch(`http://localhost:3222/blog`, {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -6,9 +6,10 @@ interface ICardProps {
   blogImg?: string;
   createdAt: string;
   id: string;
+  authorName: string;
 }
 
-function Card({ title, blogImg, createdAt, id }: ICardProps) {
+function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
   const { isAdmin, token } = useUser();
   const { setBlogs, blogs } = useBlog();
 
@@ -31,15 +32,15 @@ function Card({ title, blogImg, createdAt, id }: ICardProps) {
       </p>
       <h2 className="font-bold text-start">{title}</h2>
       <div className="flex justify-between mt-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <img
             className="rounded-full w-9 h-9"
             src="https://i.pravatar.cc/40"
             alt="placeholder"
           />
-          <p className="mt-1">Author</p>
+          <p className="mt-1">{authorName}</p>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 items-center justify-center">
           <p>{createdAt}</p>
           {isAdmin && (
             <button

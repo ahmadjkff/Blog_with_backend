@@ -1,10 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useUser } from "../context/userContext";
 
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
   const { token } = useUser();
+  const [error, setError] = useState<string | null>();
 
   const handleAddBlog = async () => {
     const title = titleRef.current?.value;
@@ -23,7 +24,7 @@ const AddBlog = () => {
       }),
     });
 
-    if (!response.ok) return <>Unable to add new blog</>;
+    if (!response.ok) setError("Unable to add Blog");
   };
 
   return (
@@ -48,7 +49,7 @@ const AddBlog = () => {
         >
           Add Blog
         </button>
-        {/* {error && <span className="font-semibold text-red-600">{error}</span>}{" "} */}
+        {error && <span className="font-semibold text-red-600">{error}</span>}
       </div>
     </div>
   );

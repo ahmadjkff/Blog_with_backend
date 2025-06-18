@@ -23,9 +23,10 @@ interface Blog {
 
 export function BlogProvider({ children }: { children: ReactNode }) {
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchblogs = async () => {
-    const response = await fetch(`http://localhost:3222/blog`);
+    const response = await fetch(`${API_URL}/blog`);
     if (!response.ok) return;
 
     setBlogs(await response.json());

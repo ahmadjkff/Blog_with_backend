@@ -9,8 +9,9 @@ const AddBlog = () => {
   const handleAddBlog = async () => {
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
+    const API_URL = import.meta.env.VITE_API_URL;
 
-    const response = await fetch("http://localhost:3222/blog", {
+    const response = await fetch(`${API_URL}/blog`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

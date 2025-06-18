@@ -5,19 +5,22 @@ import Login from "./pages/Login";
 import { UserProvider } from "./context/userContext";
 import Profile from "./pages/Profile";
 import AddBlog from "./pages/AddBlog";
+import { BlogProvider } from "./context/BlogContext";
 
 function App() {
   return (
     <UserProvider>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<BlogList />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/add-blog" element={<AddBlog />} />
-        </Routes>
-      </BrowserRouter>
+      <BlogProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<BlogList />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/add-blog" element={<AddBlog />} />
+          </Routes>
+        </BrowserRouter>
+      </BlogProvider>
     </UserProvider>
   );
 }

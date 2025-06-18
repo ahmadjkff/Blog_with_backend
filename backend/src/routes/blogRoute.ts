@@ -10,6 +10,7 @@ import {
   removeBlog,
 } from "../services/blogService";
 import blogModel from "../models/blogModel";
+import { isAdmin } from "../middlewares/idAdmin";
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ interface AddBlogBody {
   img?: string;
 }
 
-router.post("/", validateJWT, async (req: IExtendRequest, res) => {
+router.post("/", validateJWT, isAdmin, async (req: IExtendRequest, res) => {
   try {
     const { title, content, img } = req.body as AddBlogBody;
     const authorId = req.user?.id;
@@ -74,59 +75,69 @@ router.get("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
   }
 });
 
-router.put("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
-  try {
-    const { blogId } = req.params;
-    const newBlog = req.body;
-    const user = req.user;
+router.put(
+  "/:blogId",
+  validateJWT,
+  isAdmin,
+  async (req: IExtendRequest, res) => {
+    try {
+      const { blogId } = req.params;
+      const newBlog = req.body;
+      const user = req.user;
 
-    if (!blogId) res.status(400).send("blogId is missing");
+      if (!blogId) res.status(400).send("blogId is missing");
 
-    const blog = await blogModel.findById(blogId);
+      const blog = await blogModel.findById(blogId);
 
-    if (!blog) res.status(404).send("Blog not found");
+      if (!blog) res.status(404).send("Blog not found");
 
-    const isOwner = blog?.authorId.toString() === user?._id.toString();
-    const isAdmin = user?.role === "admin";
+      const isOwner = blog?.authorId.toString() === user?._id.toString();
+      const isAdmin = user?.role === "admin";
 
-    if (!isOwner && !isAdmin) {
-      res.status(403).send("Unauthorized to edit this blog");
+      if (!isOwner && !isAdmin) {
+        res.status(403).send("Unauthorized to edit this blog");
+      }
+
+      const { data, statusCode } = await modifyBlog({ blogId, newBlog });
+
+      res.status(statusCode).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal server error");
     }
-
-    const { data, statusCode } = await modifyBlog({ blogId, newBlog });
-
-    res.status(statusCode).send(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
   }
-});
+);
 
-router.delete("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
-  try {
-    const { blogId } = req.params;
-    const user = req.user;
+router.delete(
+  "/:blogId",
+  validateJWT,
+  isAdmin,
+  async (req: IExtendRequest, res) => {
+    try {
+      const { blogId } = req.params;
+      const user = req.user;
 
-    if (!blogId) res.status(400).send("blogId is missing");
+      if (!blogId) res.status(400).send("blogId is missing");
 
-    const blog = await blogModel.findById(blogId);
+      const blog = await blogModel.findById(blogId);
 
-    if (!blog) res.status(404).send("Blog not found");
+      if (!blog) res.status(404).send("Blog not found");
 
-    const isOwner = blog?.authorId.toString() === user?._id.toString();
-    const isAdmin = user?.role === "admin";
+      const isOwner = blog?.authorId.toString() === user?._id.toString();
+      const isAdmin = user?.role === "admin";
 
-    if (!isOwner && !isAdmin) {
-      res.status(403).send("Unauthorized to remove this blog");
+      if (!isOwner && !isAdmin) {
+        res.status(403).send("Unauthorized to remove this blog");
+      }
+
+      const { data, statusCode } = await removeBlog({ blogId });
+
+      res.status(statusCode).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
     }
-
-    const { data, statusCode } = await removeBlog({ blogId });
-
-    res.status(statusCode).send(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
 
 export default router;

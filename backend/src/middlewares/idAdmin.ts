@@ -7,7 +7,7 @@ export const isAdmin = (
   next: NextFunction
 ) => {
   if (req.user?.role !== "admin") {
-    return res.status(403).send("Admin access required");
+    res.status(403).send("Admin access required");
   }
   next();
 };

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useUser } from "../context/userContext";
 import { useNavigate } from "react-router";
 
@@ -34,6 +35,9 @@ const Login = () => {
     }
 
     const token = await response.json();
+
+    const decoded = jwtDecode(token) as { role: string };
+    console.log(decoded.role); // "admin" or "user"
 
     if (!token) {
       setError("Incorrect token");

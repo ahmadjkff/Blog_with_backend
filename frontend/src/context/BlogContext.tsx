@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
-import { useUser } from "./userContext";
 
 interface BlogContextType {
   blogs: Blog[];
@@ -24,14 +23,9 @@ interface Blog {
 
 export function BlogProvider({ children }: { children: ReactNode }) {
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const { token } = useUser();
 
   const fetchblogs = async () => {
-    const response = await fetch(`http://localhost:3222/blog`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(`http://localhost:3222/blog`);
     if (!response.ok) return;
 
     setBlogs(await response.json());

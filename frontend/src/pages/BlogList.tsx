@@ -7,7 +7,7 @@ const BlogList = () => {
 
   useEffect(() => {
     fetchblogs();
-  }, [blogs.length]);
+  }, [blogs]);
 
   return (
     <div className="flex flex-wrap gap-4 my-10 justify-center sm:flex-col sm:items-center md:flex-row ">

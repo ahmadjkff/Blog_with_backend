@@ -35,7 +35,7 @@ const BlogDetails = () => {
         <p className="bg-blue-500 text-white max-w-32 rounded-md h-8 flex items-center justify-center">
           category
         </p>
-        <h1 className="font-bold text-start mt-4 text-2xl">title</h1>
+        <h1 className="font-bold text-start mt-4 text-2xl">{blog.title}</h1>
         <div className="flex gap-3 mt-3 align-middle">
           <img
             src="https://i.pravatar.cc/40"

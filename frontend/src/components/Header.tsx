@@ -9,23 +9,23 @@ function Header() {
   const onSearch = () => {};
 
   return (
-    <header className=" w-full bg-white shadow-md z-10 flex align-middle items-center justify-between my-auto py-6 sm:px-1 md:px-28">
+    <header className="w-full bg-white shadow-md z-10 flex align-middle items-center my-auto py-6 xs:justify-center md:justify-between xs:gap-4 xs:px-1 md:px-28">
       <Link to="..">
         <img
-          className="max-w-32 sm:max-w-40 md:max-w-56"
+          className="max-w-32 xs:max-w-26 md:max-w-56"
           src={logo}
           alt="logo"
         />
       </Link>
 
-      <Link className="mt-[6px]" to="..">
+      <Link className="mt-[6px] xs:hidden md:block" to="..">
         Home
       </Link>
 
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <div className="relative">
           <input
-            className="bg-gray-100 border-gray-200  pl-4 p-2 rounded-md"
+            className="bg-gray-100 border-gray-200 pl-4 p-2 rounded-md xs:w-40"
             type="text"
             placeholder="Search"
             onChange={onSearch}

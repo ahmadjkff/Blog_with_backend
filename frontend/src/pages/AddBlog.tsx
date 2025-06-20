@@ -31,9 +31,9 @@ const AddBlog = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-10 gap-4 w-full">
+    <div className="flex flex-col justify-center items-center mt-10 gap-4 w-full xs:px-4 md:px-0">
       <h4 className="font-bold">Add Blog</h4>
-      <div className="flex flex-col border border-black p-4 justify-center items-center gap-2 w-1/4">
+      <div className="flex flex-col border border-black p-4 justify-center items-center gap-2 xs:w-full  md:w-1/4">
         <input
           type="text"
           className="border border-black p-3 rounded-md w-full"

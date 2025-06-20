@@ -7,7 +7,6 @@ const MyBlogs = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const { token } = useUser();
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [error, setError] = useState<string>("");
 
   console.log(API_URL);
 
@@ -18,13 +17,12 @@ const MyBlogs = () => {
       });
 
       if (!response.ok) {
-        setError("Failed to find your blogs");
+        return;
       }
 
       const data = await response.json();
 
       setBlogs(data);
-      setError("");
     };
     fetchBlogs();
   }, []);
@@ -45,7 +43,6 @@ const MyBlogs = () => {
       ) : (
         <>No Blogs</>
       )}
-      {error && <span className="font-semibold text-red-600">{error}</span>}
     </div>
   );
 };

@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useUser } from "../context/userContext";
 
 const AvatarDropdown: React.FC = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { logout, isAdmin } = useUser();
+  const navigate = useNavigate();
 
   const toggleDropdown = () => setOpen(!open);
 
@@ -25,6 +26,7 @@ const AvatarDropdown: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    navigate("/");
   };
 
   return (

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>();
   const { addBlog } = useBlog();
@@ -13,15 +14,16 @@ const AddBlog = () => {
   const handleAddBlog = async () => {
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
+    const category = categoryRef.current?.value;
     const img = imgRef.current?.value;
 
-    if (!title || !content || !img) {
+    if (!title || !content || !img || !category) {
       setError("All fields are required");
       return;
     }
 
     setError(null);
-    addBlog(title, content, img);
+    addBlog(title, content, img, category);
     alert("Blog added successfully");
     setTimeout(() => {
       navigate("/");
@@ -43,6 +45,12 @@ const AddBlog = () => {
           className="border border-black p-3 rounded-md w-full"
           placeholder="Content"
           ref={contentRef}
+        />
+        <input
+          type="text"
+          className="border border-black p-3 rounded-md w-full"
+          placeholder="Category"
+          ref={categoryRef}
         />
         <input
           type="text"

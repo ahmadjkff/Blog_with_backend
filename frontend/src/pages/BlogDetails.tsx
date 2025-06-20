@@ -18,7 +18,7 @@ const BlogDetails = () => {
     <div className="flex justify-center my-10">
       <div className="card-content w-[800px] flex flex-col justify-center align-middle mx-0 my-auto">
         <p className="bg-blue-500 text-white max-w-32 rounded-md h-8 flex items-center justify-center">
-          category
+          {blog.category}
         </p>
         <h1 className="font-bold text-start mt-4 text-2xl">{blog.title}</h1>
         <div className="flex gap-3 mt-3 align-middle">

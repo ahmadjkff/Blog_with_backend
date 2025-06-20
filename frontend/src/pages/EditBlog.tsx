@@ -6,6 +6,7 @@ const EditBlog = () => {
   const { blog, editBlog } = useBlog();
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const categoryRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -14,13 +15,14 @@ const EditBlog = () => {
   const handleEdit = () => {
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
+    const category = categoryRef.current?.value;
     const img = imgRef.current?.value;
 
-    if (!title || !content || !img) {
+    if (!title || !content || !img || !category) {
       return;
     }
 
-    if (blog) editBlog(blog?._id, title, content, img);
+    if (blog) editBlog(blog?._id, title, content, category, img);
 
     navigate(`/`);
   };
@@ -45,6 +47,13 @@ const EditBlog = () => {
           ref={contentRef}
         ></textarea>
 
+        <input
+          className="border border-black p-3 rounded-md w-full"
+          type="text"
+          placeholder="Category"
+          defaultValue={blog?.category}
+          ref={categoryRef}
+        />
         <input
           className="border border-black p-3 rounded-md w-full"
           type="text"

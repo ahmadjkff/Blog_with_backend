@@ -9,10 +9,21 @@ interface BlogContextType {
   setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
   fetchblogs: () => void;
   fetchMyBlogs: () => void;
-  addBlog: (title: string, content: string, img: string) => void;
+  addBlog: (
+    title: string,
+    content: string,
+    category: string,
+    img: string
+  ) => void;
   fetchBlog: (id: string) => Promise<boolean | undefined>;
   deleteBlog: (id: string) => void;
-  editBlog: (id: string, title: string, content: string, img: string) => void;
+  editBlog: (
+    id: string,
+    title: string,
+    content: string,
+    category: string,
+    img: string
+  ) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -21,6 +32,7 @@ export interface Blog {
   _id: string;
   title: string;
   content: string;
+  category: string;
   img?: string | undefined;
   createdAt: string;
   authorId: {
@@ -57,7 +69,12 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     setMyBlogs(data);
   };
 
-  const addBlog = async (title: string, content: string, img: string) => {
+  const addBlog = async (
+    title: string,
+    content: string,
+    category: string,
+    img: string
+  ) => {
     if (!title || !content) {
       return;
     }
@@ -71,6 +88,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify({
         title,
         content,
+        category,
         img,
       }),
     });
@@ -106,6 +124,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     id: string,
     title: string,
     content: string,
+    category: string,
     img: string
   ) => {
     const response = await fetch(`${API_URL}/blog/${id}`, {
@@ -117,6 +136,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify({
         title,
         content,
+        category,
         img,
       }),
     });

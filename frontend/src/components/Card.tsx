@@ -4,13 +4,21 @@ import { useUser } from "../context/userContext";
 
 interface ICardProps {
   title: string;
+  category: string;
   blogImg?: string;
   createdAt: string;
   id: string;
   authorName: string;
 }
 
-function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
+function Card({
+  title,
+  category,
+  blogImg,
+  createdAt,
+  id,
+  authorName,
+}: ICardProps) {
   const { isAdmin } = useUser();
   const { deleteBlog, fetchBlog } = useBlog();
   const navigate = useNavigate();
@@ -32,8 +40,8 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
       className="flex flex-col w-[320px] p-5 border rounded-md hover:bg-gray-50 transition duration-200"
     >
       <img src={blogImg} alt="placeholder" />
-      <p className="bg-blue-50 w-full max-w-24 rounded-sm text-blue-500 my-5">
-        category
+      <p className="bg-blue-50 w-full max-w-24 rounded-sm text-blue-500 my-5 p-1 text-center">
+        {category || "-----"}
       </p>
       <h2 className="font-bold text-start">{title}</h2>
       <div className="flex justify-between items-center mt-4">

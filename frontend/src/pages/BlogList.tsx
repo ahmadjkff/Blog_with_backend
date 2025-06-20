@@ -17,6 +17,7 @@ const BlogList = () => {
             key={blog._id}
             id={blog._id}
             title={blog.title}
+            category={blog.category}
             blogImg={blog.img}
             createdAt={new Date(blog.createdAt).toLocaleDateString()}
             authorName={blog.authorId.username}

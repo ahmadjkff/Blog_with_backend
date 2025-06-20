@@ -17,16 +17,18 @@ const router = express.Router();
 interface AddBlogBody {
   title: string;
   content: string;
+  category: string;
   img?: string;
 }
 
 router.post("/", validateJWT, isAdmin, async (req: IExtendRequest, res) => {
   try {
-    const { title, content, img } = req.body as AddBlogBody;
+    const { title, content, category, img } = req.body as AddBlogBody;
     const authorId = req.user?.id;
     const { data, statusCode } = await addBlog({
       title,
       content,
+      category,
       authorId,
       img,
     });

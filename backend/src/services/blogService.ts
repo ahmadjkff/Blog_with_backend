@@ -4,6 +4,7 @@ import blogModel from "../models/blogModel";
 interface IAddBlogParams {
   title: string;
   content: string;
+  category: string;
   authorId: ObjectId | string;
   img?: string;
 }
@@ -11,6 +12,7 @@ interface IAddBlogParams {
 export const addBlog = async ({
   title,
   content,
+  category,
   authorId,
   img,
 }: IAddBlogParams) => {
@@ -19,7 +21,13 @@ export const addBlog = async ({
       return { data: "Title and content are required", statusCode: 400 };
     }
 
-    const newBlog = await blogModel.create({ title, content, authorId, img });
+    const newBlog = await blogModel.create({
+      title,
+      content,
+      category,
+      authorId,
+      img,
+    });
 
     await newBlog.save();
     return { data: newBlog, statusCode: 201 };
@@ -84,6 +92,7 @@ interface IModifyBlog {
   newBlog: {
     title?: string;
     content?: string;
+    category?: string;
     img?: string;
   };
 }
@@ -95,6 +104,7 @@ export const modifyBlog = async ({ blogId, newBlog }: IModifyBlog) => {
 
     if (newBlog.title !== undefined) blog.title = newBlog.title;
     if (newBlog.content !== undefined) blog.content = newBlog.content;
+    if (newBlog.category !== undefined) blog.category = newBlog.category;
     if (newBlog.img !== undefined) blog.img = newBlog.img;
 
     await blog.save();

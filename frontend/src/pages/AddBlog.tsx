@@ -12,6 +12,11 @@ const AddBlog = () => {
     const content = contentRef.current?.value;
     const API_URL = import.meta.env.VITE_API_URL;
 
+    if (!title || !content) {
+      setError("All fields are required");
+      return;
+    }
+
     const response = await fetch(`${API_URL}/blog`, {
       method: "POST",
       headers: {
@@ -25,6 +30,8 @@ const AddBlog = () => {
     });
 
     if (!response.ok) setError("Unable to add Blog");
+
+    setError("");
   };
 
   return (

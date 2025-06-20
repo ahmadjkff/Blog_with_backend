@@ -1,23 +1,31 @@
 import { useRef, useState } from "react";
 import { useBlog } from "../context/BlogContext";
+import { useNavigate } from "react-router";
 
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
+  const imgRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>();
   const { addBlog } = useBlog();
+  const navigate = useNavigate();
 
   const handleAddBlog = async () => {
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
+    const img = imgRef.current?.value;
 
-    if (!title || !content) {
+    if (!title || !content || !img) {
       setError("All fields are required");
       return;
     }
 
     setError(null);
-    addBlog(title, content);
+    addBlog(title, content, img);
+    alert("Blog added successfully");
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
   };
 
   return (
@@ -35,6 +43,12 @@ const AddBlog = () => {
           className="border border-black p-3 rounded-md w-full"
           placeholder="Content"
           ref={contentRef}
+        />
+        <input
+          type="text"
+          className="border border-black p-3 rounded-md w-full"
+          placeholder="Image"
+          ref={imgRef}
         />
         <button
           className="bg-blue-600 w-full p-2 rounded-md text-white mt-2 cursor-pointer"

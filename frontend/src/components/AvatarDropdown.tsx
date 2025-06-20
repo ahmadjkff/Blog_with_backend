@@ -46,6 +46,9 @@ const AvatarDropdown: React.FC = () => {
                 <Link to={"/add-blog"}>Add Blog</Link>
               </li>
             )}
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <Link to={"/my-blogs"}>My Blogs</Link>
+            </li>
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={handleLogout}

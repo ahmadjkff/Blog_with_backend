@@ -65,7 +65,9 @@ export const getBlog = async ({ blogId }: IGetBlog) => {
   try {
     if (!blogId) return { data: "blogId is missing", statusCode: 400 };
 
-    const blog = await blogModel.findById(blogId);
+    const blog = await blogModel
+      .findById(blogId)
+      .populate("authorId", "username");
 
     if (!blog)
       return { data: "Blog with this id does not exist", statusCode: 400 };

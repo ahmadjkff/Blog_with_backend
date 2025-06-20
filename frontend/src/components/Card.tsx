@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useBlog } from "../context/BlogContext";
 import { useUser } from "../context/userContext";
 
@@ -25,7 +26,10 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
   };
 
   return (
-    <div className="flex flex-col w-[320px] p-5 border rounded-md hover:bg-gray-50 transition duration-200">
+    <Link
+      to={`blog/${id}`}
+      className="flex flex-col w-[320px] p-5 border rounded-md hover:bg-gray-50 transition duration-200"
+    >
       <img src={blogImg} alt="placeholder" />
       <p className="bg-blue-50 w-full max-w-24 rounded-sm text-blue-500 my-5">
         category
@@ -52,7 +56,7 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

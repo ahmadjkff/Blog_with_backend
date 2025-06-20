@@ -49,7 +49,11 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
           {isAdmin && (
             <button
               className="text-red-500 cursor-pointer"
-              onClick={() => handleDelete(id)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleDelete(id);
+              }}
             >
               Delete
             </button>

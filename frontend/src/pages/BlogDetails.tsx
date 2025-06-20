@@ -3,7 +3,7 @@ import blogImage from "../assets/blogImage.png";
 import blogImage2 from "../assets/blogImage2.png";
 import { useUser } from "../context/userContext";
 import type { Blog as BlogDetails } from "../context/BlogContext";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 const BlogDetails = () => {
   const API_URL = import.meta.env.VITE_API_URL;

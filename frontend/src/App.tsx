@@ -9,6 +9,7 @@ import { BlogProvider } from "./context/BlogContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MyBlogs from "./pages/MyBlogs";
 import BlogDetails from "./pages/BlogDetails";
+import EditBlog from "./pages/EditBlog";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-blogs" element={<MyBlogs />} />
-            <Route path="/blog/:id" element={<BlogDetails />} />\{" "}
+            <Route path="/blog/:id" element={<BlogDetails />} />
+            <Route path="/edit/:id" element={<EditBlog />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/add-blog" element={<AddBlog />} />
             </Route>

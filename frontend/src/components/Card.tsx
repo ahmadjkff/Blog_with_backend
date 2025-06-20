@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBlog } from "../context/BlogContext";
 import { useUser } from "../context/userContext";
 
@@ -12,10 +12,18 @@ interface ICardProps {
 
 function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
   const { isAdmin } = useUser();
-  const { deleteBlog } = useBlog();
+  const { deleteBlog, fetchBlog } = useBlog();
+  const navigate = useNavigate();
 
   const handleDelete = async (id: string) => {
     deleteBlog(id);
+  };
+
+  const handleEdit = async (id: string) => {
+    const success = await fetchBlog(id);
+    if (success) {
+      navigate(`/edit/${id}`);
+    }
   };
 
   return (
@@ -28,8 +36,8 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
         category
       </p>
       <h2 className="font-bold text-start">{title}</h2>
-      <div className="flex justify-between mt-4">
-        <div className="flex gap-2 items-center">
+      <div className="flex justify-between items-center mt-4">
+        <div className="flex  gap-2 items-center">
           <img
             className="rounded-full w-9 h-9"
             src="https://i.pravatar.cc/40"
@@ -37,8 +45,8 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
           />
           <p className="mt-1">{authorName}</p>
         </div>
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <p>{createdAt}</p>
+        <p>{createdAt}</p>
+        <div className="flex flex-col gap-1/2">
           {isAdmin && (
             <button
               className="text-red-500 cursor-pointer"
@@ -49,6 +57,18 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
               }}
             >
               Delete
+            </button>
+          )}
+          {isAdmin && (
+            <button
+              className="text-blue-500 cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleEdit(id);
+              }}
+            >
+              Edit
             </button>
           )}
         </div>

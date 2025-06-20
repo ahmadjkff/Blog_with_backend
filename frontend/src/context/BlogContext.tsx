@@ -10,8 +10,9 @@ interface BlogContextType {
   fetchblogs: () => void;
   fetchMyBlogs: () => void;
   addBlog: (title: string, content: string, img: string) => void;
-  fetchBlog: (id: string) => void;
+  fetchBlog: (id: string) => Promise<boolean | undefined>;
   deleteBlog: (id: string) => void;
+  editBlog: (id: string, title: string, content: string, img: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -78,8 +79,6 @@ export function BlogProvider({ children }: { children: ReactNode }) {
   };
 
   const fetchBlog = async (id: string) => {
-    console.log(id);
-
     const response = await fetch(`${API_URL}/blog/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -89,6 +88,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     const data = await response.json();
 
     setBlog(data);
+    return true;
   };
 
   const deleteBlog = async (id: string) => {
@@ -98,6 +98,28 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     });
     const otherblogs = blogs.filter((b) => b._id !== id);
     setBlogs(otherblogs);
+
+    if (!response.ok) return;
+  };
+
+  const editBlog = async (
+    id: string,
+    title: string,
+    content: string,
+    img: string
+  ) => {
+    const response = await fetch(`${API_URL}/blog/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        content,
+        img,
+      }),
+    });
 
     if (!response.ok) return;
   };
@@ -114,6 +136,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
         addBlog,
         fetchBlog,
         deleteBlog,
+        editBlog,
       }}
     >
       {children}

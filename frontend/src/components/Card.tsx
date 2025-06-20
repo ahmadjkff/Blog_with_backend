@@ -11,18 +11,11 @@ interface ICardProps {
 }
 
 function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
-  const { isAdmin, token } = useUser();
-  const { setBlogs, blogs } = useBlog();
+  const { isAdmin } = useUser();
+  const { deleteBlog } = useBlog();
 
   const handleDelete = async (id: string) => {
-    const response = await fetch(`http://localhost:3222/blog/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const otherblogs = blogs.filter((b) => b._id !== id);
-    setBlogs(otherblogs);
-
-    if (!response.ok) return;
+    deleteBlog(id);
   };
 
   return (

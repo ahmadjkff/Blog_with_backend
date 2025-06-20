@@ -9,8 +9,9 @@ interface BlogContextType {
   setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
   fetchblogs: () => void;
   fetchMyBlogs: () => void;
-  addBlog: (title: string, content: string) => void;
+  addBlog: (title: string, content: string, img: string) => void;
   fetchBlog: (id: string) => void;
+  deleteBlog: (id: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -55,7 +56,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     setMyBlogs(data);
   };
 
-  const addBlog = async (title: string, content: string) => {
+  const addBlog = async (title: string, content: string, img: string) => {
     if (!title || !content) {
       return;
     }
@@ -69,6 +70,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify({
         title,
         content,
+        img,
       }),
     });
 
@@ -89,6 +91,17 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     setBlog(data);
   };
 
+  const deleteBlog = async (id: string) => {
+    const response = await fetch(`http://localhost:3222/blog/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const otherblogs = blogs.filter((b) => b._id !== id);
+    setBlogs(otherblogs);
+
+    if (!response.ok) return;
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -100,6 +113,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
         fetchMyBlogs,
         addBlog,
         fetchBlog,
+        deleteBlog,
       }}
     >
       {children}

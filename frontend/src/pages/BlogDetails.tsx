@@ -1,30 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import blogImage from "../assets/blogImage.png";
 import blogImage2 from "../assets/blogImage2.png";
-import { useUser } from "../context/userContext";
-import type { Blog as BlogDetails } from "../context/BlogContext";
+import { useBlog } from "../context/BlogContext";
 import { useParams } from "react-router-dom";
 
 const BlogDetails = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
-  const { token } = useUser();
+  const { blog, fetchBlog } = useBlog();
   const { id } = useParams();
 
-  const [blog, setBlog] = useState<BlogDetails>();
-
   useEffect(() => {
-    const fetchBlog = async () => {
-      const response = await fetch(`${API_URL}/blog/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) return;
-
-      const data = await response.json();
-
-      setBlog(data);
-    };
-    fetchBlog();
+    if (id) fetchBlog(id);
   }, []);
 
   if (!blog) return <>Cannot find blog</>;

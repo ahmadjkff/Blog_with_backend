@@ -5,10 +5,12 @@ import { useUser } from "./userContext";
 interface BlogContextType {
   blogs: Blog[];
   myBlogs: Blog[];
+  blog: Blog | undefined;
   setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
   fetchblogs: () => void;
   fetchMyBlogs: () => void;
   addBlog: (title: string, content: string) => void;
+  fetchBlog: (id: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -28,6 +30,7 @@ export interface Blog {
 export function BlogProvider({ children }: { children: ReactNode }) {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [myBlogs, setMyBlogs] = useState<Blog[]>([]);
+  const [blog, setBlog] = useState<Blog>();
   const API_URL = import.meta.env.VITE_API_URL;
   const { token } = useUser();
 
@@ -72,9 +75,32 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     if (!response.ok) return;
   };
 
+  const fetchBlog = async (id: string) => {
+    console.log(id);
+
+    const response = await fetch(`${API_URL}/blog/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+
+    setBlog(data);
+  };
+
   return (
     <BlogContext.Provider
-      value={{ blogs, myBlogs, setBlogs, fetchblogs, fetchMyBlogs, addBlog }}
+      value={{
+        blogs,
+        myBlogs,
+        blog,
+        setBlogs,
+        fetchblogs,
+        fetchMyBlogs,
+        addBlog,
+        fetchBlog,
+      }}
     >
       {children}
     </BlogContext.Provider>

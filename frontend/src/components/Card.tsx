@@ -27,7 +27,7 @@ function Card({ title, blogImg, createdAt, id, authorName }: ICardProps) {
 
   return (
     <Link
-      to={`blog/${id}`}
+      to={`/blog/${id}`}
       className="flex flex-col w-[320px] p-5 border rounded-md hover:bg-gray-50 transition duration-200"
     >
       <img src={blogImg} alt="placeholder" />

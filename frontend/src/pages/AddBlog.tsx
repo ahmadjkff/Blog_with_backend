@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
   const categoryRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>();
@@ -40,8 +40,7 @@ const AddBlog = () => {
           placeholder="Title"
           ref={titleRef}
         />
-        <input
-          type="text"
+        <textarea
           className="border border-black p-3 rounded-md w-full"
           placeholder="Content"
           ref={contentRef}

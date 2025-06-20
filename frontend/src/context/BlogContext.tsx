@@ -8,6 +8,7 @@ interface BlogContextType {
   setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
   fetchblogs: () => void;
   fetchMyBlogs: () => void;
+  addBlog: (title: string, content: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -51,9 +52,29 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     setMyBlogs(data);
   };
 
+  const addBlog = async (title: string, content: string) => {
+    if (!title || !content) {
+      return;
+    }
+
+    const response = await fetch(`${API_URL}/blog`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        content,
+      }),
+    });
+
+    if (!response.ok) return;
+  };
+
   return (
     <BlogContext.Provider
-      value={{ blogs, myBlogs, setBlogs, fetchblogs, fetchMyBlogs }}
+      value={{ blogs, myBlogs, setBlogs, fetchblogs, fetchMyBlogs, addBlog }}
     >
       {children}
     </BlogContext.Provider>

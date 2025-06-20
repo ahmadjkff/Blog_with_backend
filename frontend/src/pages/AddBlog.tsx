@@ -1,37 +1,23 @@
 import { useRef, useState } from "react";
-import { useUser } from "../context/userContext";
+import { useBlog } from "../context/BlogContext";
 
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
-  const { token } = useUser();
   const [error, setError] = useState<string | null>();
+  const { addBlog } = useBlog();
 
   const handleAddBlog = async () => {
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
-    const API_URL = import.meta.env.VITE_API_URL;
 
     if (!title || !content) {
       setError("All fields are required");
       return;
     }
 
-    const response = await fetch(`${API_URL}/blog`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        content,
-      }),
-    });
-
-    if (!response.ok) setError("Unable to add Blog");
-
-    setError("");
+    setError(null);
+    addBlog(title, content);
   };
 
   return (

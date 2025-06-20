@@ -8,8 +8,6 @@ const MyBlogs = () => {
   const { token } = useUser();
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
-  console.log(API_URL);
-
   useEffect(() => {
     const fetchBlogs = async () => {
       const response = await fetch(`${API_URL}/blog/my-blogs`, {

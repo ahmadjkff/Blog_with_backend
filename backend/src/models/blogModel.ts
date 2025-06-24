@@ -6,6 +6,7 @@ interface IBlog extends Document {
   category: string;
   authorId: ObjectId | string;
   img?: string;
+  claps: number;
 }
 
 const blogSchema = new Schema<IBlog>(
@@ -15,6 +16,7 @@ const blogSchema = new Schema<IBlog>(
     category: { type: String },
     authorId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     img: { type: String },
+    claps: { type: Number },
   },
   { timestamps: true }
 );

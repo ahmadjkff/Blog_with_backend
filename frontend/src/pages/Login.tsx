@@ -11,7 +11,10 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (
+    e?: React.MouseEvent<HTMLButtonElement> | Event
+  ) => {
+    if (e) e.preventDefault();
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
 
@@ -50,7 +53,7 @@ const Login = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-10 gap-4 w-full xs:px-4 md:px-0">
       <h4 className="font-bold text-2xl">Login To Your Account</h4>
-      <div className="flex flex-col border border-black p-4 justify-center items-center gap-2 xs:w-full md:w-1/4">
+      <form className="flex flex-col border border-black p-4 justify-center items-center gap-2 xs:w-full md:w-1/4">
         <input
           className="border border-black p-3 rounded-md w-full"
           type="text"
@@ -66,11 +69,12 @@ const Login = () => {
         <button
           className="bg-blue-600 w-full p-2 rounded-md text-white mt-2 cursor-pointer"
           onClick={handleLogin}
+          type="submit"
         >
           Login
         </button>
         {error && <span className="font-semibold text-red-600">{error}</span>}
-      </div>
+      </form>
     </div>
   );
 };

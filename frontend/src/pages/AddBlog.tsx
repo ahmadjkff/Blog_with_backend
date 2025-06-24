@@ -8,7 +8,7 @@ const AddBlog = () => {
   const categoryRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>();
-  const { addBlog } = useBlog();
+  const { addBlog, error: contextError } = useBlog();
   const navigate = useNavigate();
 
   const handleAddBlog = async (
@@ -26,11 +26,16 @@ const AddBlog = () => {
     }
 
     setError(null);
-    addBlog(title, content, img, category);
-    alert("Blog added successfully");
-    setTimeout(() => {
-      navigate("/");
-    }, 3000);
+
+    const success = await addBlog(title, content, category, img);
+
+    if (success) {
+      alert("Blog added successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 500);
+    }
+    console.log(contextError);
   };
 
   return (
@@ -68,6 +73,9 @@ const AddBlog = () => {
           Add Blog
         </button>
         {error && <span className="font-semibold text-red-600">{error}</span>}
+        {contextError && (
+          <span className="font-semibold text-red-600">{contextError}</span>
+        )}
       </form>
     </div>
   );

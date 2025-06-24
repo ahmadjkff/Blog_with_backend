@@ -1,18 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import { useBlog } from "../context/BlogContext";
 import { useNavigate } from "react-router";
 
 const EditBlog = () => {
-  const { blog, editBlog } = useBlog();
+  const { blog, editBlog, error: contextError } = useBlog();
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const categoryRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
-
-  const handleEdit = (e: React.MouseEvent<HTMLButtonElement> | Event) => {
+  const handleEdit = async (e: React.MouseEvent<HTMLButtonElement> | Event) => {
     if (e) e.preventDefault();
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
@@ -20,12 +19,20 @@ const EditBlog = () => {
     const img = imgRef.current?.value;
 
     if (!title || !content || !img || !category) {
+      setError("all fields are required");
       return;
     }
 
-    if (blog) editBlog(blog?._id, title, content, category, img);
+    if (!blog) {
+      setError("Blog Not Found");
+      return;
+    }
 
-    navigate(`/`);
+    setError(null);
+
+    const success = await editBlog(blog?._id, title, content, category, img);
+
+    if (success) navigate(`/`);
   };
 
   return (
@@ -69,6 +76,10 @@ const EditBlog = () => {
         >
           Submit
         </button>
+        {error && <span className="font-semibold text-red-600">{error}</span>}
+        {contextError && (
+          <span className="font-semibold text-red-600">{contextError}</span>
+        )}
       </form>
     </div>
   );

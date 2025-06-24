@@ -3,7 +3,7 @@ import Card from "../components/Card";
 import { useBlog } from "../context/BlogContext";
 
 const MyBlogs = () => {
-  const { fetchMyBlogs, myBlogs } = useBlog();
+  const { fetchMyBlogs, myBlogs, error } = useBlog();
 
   useEffect(() => {
     fetchMyBlogs();
@@ -24,7 +24,7 @@ const MyBlogs = () => {
           />
         ))
       ) : (
-        <>No Blogs</>
+        <>No Blogs: {error}</>
       )}
     </div>
   );

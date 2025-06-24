@@ -3,11 +3,13 @@ import Card from "../components/Card";
 import { useBlog } from "../context/BlogContext";
 
 const BlogList = () => {
-  const { fetchblogs, blogs } = useBlog();
+  const { fetchblogs, blogs, error } = useBlog();
 
   useEffect(() => {
     fetchblogs();
   }, [blogs]);
+
+  if (error) alert(error);
 
   return (
     <div className="flex flex-wrap gap-4 my-10 justify-center sm:flex-col sm:items-center md:flex-row ">
@@ -24,7 +26,7 @@ const BlogList = () => {
           />
         ))
       ) : (
-        <>No Blogs</>
+        <>No Blogs: {error}</>
       )}
     </div>
   );

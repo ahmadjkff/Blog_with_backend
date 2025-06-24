@@ -6,6 +6,7 @@ interface BlogContextType {
   blogs: Blog[];
   myBlogs: Blog[];
   blog: Blog | undefined;
+  error: string | null;
   setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
   fetchblogs: () => void;
   fetchMyBlogs: () => void;
@@ -14,7 +15,7 @@ interface BlogContextType {
     content: string,
     category: string,
     img: string
-  ) => void;
+  ) => Promise<boolean | undefined>;
   fetchBlog: (id: string) => Promise<boolean | undefined>;
   deleteBlog: (id: string) => void;
   editBlog: (
@@ -23,7 +24,7 @@ interface BlogContextType {
     content: string,
     category: string,
     img: string
-  ) => void;
+  ) => Promise<boolean | undefined>;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -45,28 +46,43 @@ export function BlogProvider({ children }: { children: ReactNode }) {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [myBlogs, setMyBlogs] = useState<Blog[]>([]);
   const [blog, setBlog] = useState<Blog>();
+  const [error, setError] = useState<string | null>(null);
   const API_URL = import.meta.env.VITE_API_URL;
   const { token } = useUser();
 
   const fetchblogs = async () => {
-    const response = await fetch(`${API_URL}/blog`);
-    if (!response.ok) return;
+    try {
+      const response = await fetch(`${API_URL}/blog`);
+      if (!response.ok) {
+        setError("Failed to fetch blogs");
+        return;
+      }
 
-    setBlogs(await response.json());
+      setBlogs(await response.json());
+      setError(null);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to fetch blogs: ", error);
+    }
   };
 
   const fetchMyBlogs = async () => {
-    const response = await fetch(`${API_URL}/blog/my-blogs`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const response = await fetch(`${API_URL}/blog/my-blogs`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    if (!response.ok) {
-      return;
+      if (!response.ok) {
+        return;
+      }
+
+      const data = await response.json();
+
+      setMyBlogs(data);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to fetch blogs: ", error);
     }
-
-    const data = await response.json();
-
-    setMyBlogs(data);
   };
 
   const addBlog = async (
@@ -74,50 +90,76 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     content: string,
     category: string,
     img: string
-  ) => {
-    if (!title || !content) {
-      return;
+  ): Promise<boolean> => {
+    try {
+      if (!title || !content || !category) {
+        setError("All fields are required");
+        return false;
+      }
+
+      const response = await fetch(`${API_URL}/blog`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content, category, img }),
+      });
+
+      if (!response.ok) {
+        setError("Failed to add blog");
+        return false;
+      }
+
+      setError(null);
+      return true;
+    } catch (error: any) {
+      setError(error.message);
+      return false;
     }
-
-    const response = await fetch(`${API_URL}/blog`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        content,
-        category,
-        img,
-      }),
-    });
-
-    if (!response.ok) return;
   };
 
   const fetchBlog = async (id: string) => {
-    const response = await fetch(`${API_URL}/blog/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const response = await fetch(`${API_URL}/blog/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    if (!response.ok) return;
+      if (!response.ok) {
+        setError("failed to get the blog");
+        return;
+      }
 
-    const data = await response.json();
+      const data = await response.json();
 
-    setBlog(data);
-    return true;
+      setBlog(data);
+      setError(null);
+      return true;
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to fetch blogs: ", error);
+    }
   };
 
   const deleteBlog = async (id: string) => {
-    const response = await fetch(`http://localhost:3222/blog/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const otherblogs = blogs.filter((b) => b._id !== id);
-    setBlogs(otherblogs);
+    try {
+      const response = await fetch(`${API_URL}/blog/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const otherblogs = blogs.filter((b) => b._id !== id);
+      setBlogs(otherblogs);
 
-    if (!response.ok) return;
+      if (!response.ok) {
+        setError("failed to deleted the blog, pleas try again");
+        return;
+      }
+
+      setError(null);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to fetch blogs: ", error);
+    }
   };
 
   const editBlog = async (
@@ -127,21 +169,33 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     category: string,
     img: string
   ) => {
-    const response = await fetch(`${API_URL}/blog/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        content,
-        category,
-        img,
-      }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/blog/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+          category,
+          img,
+        }),
+      });
 
-    if (!response.ok) return;
+      if (!response.ok) {
+        setError("Failed to edit blog, try again later");
+        return false;
+      }
+
+      setError(null);
+      return true;
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to fetch blogs: ", error);
+      return false;
+    }
   };
 
   return (
@@ -150,6 +204,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
         blogs,
         myBlogs,
         blog,
+        error,
         setBlogs,
         fetchblogs,
         fetchMyBlogs,

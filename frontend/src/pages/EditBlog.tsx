@@ -8,7 +8,7 @@ const EditBlog = () => {
   const { blog, editBlog, error: contextError } = useBlog();
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<string | undefined>(blog?.category);
   const imgRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();

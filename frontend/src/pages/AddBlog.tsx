@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
 import { useBlog } from "../context/BlogContext";
 import { useNavigate } from "react-router";
+import Dropdown from "../components/DropdownMenu";
+import { DROPDOWN_OPTIONS } from "../constants/dropdownOptions";
 
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const categoryRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
+  const [category, setCategory] = useState<string>("");
   const [error, setError] = useState<string | null>();
   const { addBlog, error: contextError } = useBlog();
   const navigate = useNavigate();
@@ -17,7 +19,6 @@ const AddBlog = () => {
     if (e) e.preventDefault();
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
-    const category = categoryRef.current?.value;
     const img = imgRef.current?.value;
 
     if (!title || !content || !img || !category) {
@@ -38,6 +39,11 @@ const AddBlog = () => {
     console.log(contextError);
   };
 
+  const handleCategory = (option: { label: string; value: string }) => {
+    setCategory(option.value);
+    console.log(option.value);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center mt-10 gap-4 w-full xs:px-4 md:px-0">
       <h4 className="font-bold">Add Blog</h4>
@@ -53,11 +59,10 @@ const AddBlog = () => {
           placeholder="Content"
           ref={contentRef}
         />
-        <input
-          type="text"
-          className="border border-black p-3 rounded-md w-full"
+        <Dropdown
+          options={DROPDOWN_OPTIONS}
           placeholder="Category"
-          ref={categoryRef}
+          onSelect={handleCategory}
         />
         <input
           type="text"

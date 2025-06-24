@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
 import { useBlog } from "../context/BlogContext";
 import { useNavigate } from "react-router";
+import Dropdown from "../components/DropdownMenu";
+import { DROPDOWN_OPTIONS } from "../constants/dropdownOptions";
 
 const EditBlog = () => {
   const { blog, editBlog, error: contextError } = useBlog();
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const categoryRef = useRef<HTMLInputElement>(null);
+  const [category, setCategory] = useState<string>("");
   const imgRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -15,7 +17,6 @@ const EditBlog = () => {
     if (e) e.preventDefault();
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
-    const category = categoryRef.current?.value;
     const img = imgRef.current?.value;
 
     if (!title || !content || !img || !category) {
@@ -33,6 +34,11 @@ const EditBlog = () => {
     const success = await editBlog(blog?._id, title, content, category, img);
 
     if (success) navigate(`/`);
+  };
+
+  const handleCategory = (option: { label: string; value: string }) => {
+    setCategory(option.value);
+    console.log(option.value);
   };
 
   return (
@@ -55,12 +61,10 @@ const EditBlog = () => {
           ref={contentRef}
         ></textarea>
 
-        <input
-          className="border border-black p-3 rounded-md w-full"
-          type="text"
-          placeholder="Category"
-          defaultValue={blog?.category}
-          ref={categoryRef}
+        <Dropdown
+          options={DROPDOWN_OPTIONS}
+          placeholder={blog?.category}
+          onSelect={handleCategory}
         />
         <input
           className="border border-black p-3 rounded-md w-full"

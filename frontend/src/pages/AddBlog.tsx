@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useBlog } from "../context/BlogContext";
 import { useNavigate } from "react-router";
-import Dropdown from "../components/DropdownMenu";
-import { DROPDOWN_OPTIONS } from "../constants/dropdownOptions";
+import Dropdown from "../components/Dropdown";
+import { CATEGORY_OPTIONS } from "../constants/dropdownOptions";
 
 const AddBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -60,7 +60,7 @@ const AddBlog = () => {
           ref={contentRef}
         />
         <Dropdown
-          options={DROPDOWN_OPTIONS}
+          options={CATEGORY_OPTIONS}
           placeholder="Category"
           onSelect={handleCategory}
         />

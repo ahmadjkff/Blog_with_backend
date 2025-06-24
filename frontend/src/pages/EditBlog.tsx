@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useBlog } from "../context/BlogContext";
 import { useNavigate } from "react-router";
-import Dropdown from "../components/DropdownMenu";
-import { DROPDOWN_OPTIONS } from "../constants/dropdownOptions";
+import Dropdown from "../components/Dropdown";
+import { CATEGORY_OPTIONS } from "../constants/dropdownOptions";
 
 const EditBlog = () => {
   const { blog, editBlog, error: contextError } = useBlog();
@@ -62,7 +62,7 @@ const EditBlog = () => {
         ></textarea>
 
         <Dropdown
-          options={DROPDOWN_OPTIONS}
+          options={CATEGORY_OPTIONS}
           placeholder={blog?.category}
           onSelect={handleCategory}
         />

@@ -12,7 +12,8 @@ const EditBlog = () => {
 
   useEffect(() => {}, []);
 
-  const handleEdit = () => {
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement> | Event) => {
+    if (e) e.preventDefault();
     const title = titleRef.current?.value;
     const content = contentRef.current?.value;
     const category = categoryRef.current?.value;
@@ -30,7 +31,7 @@ const EditBlog = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-10 gap-4 w-full xs:px-4 md:px-0">
       <h4 className="font-bold text-2xl">Edit Blog</h4>
-      <div className="flex flex-col border border-black p-4 justify-center items-center gap-2 xs:w-full md:w-1/4">
+      <form className="flex flex-col border border-black p-4 justify-center items-center gap-2 xs:w-full md:w-1/4">
         <input
           className="border border-black p-3 rounded-md w-full"
           type="text"
@@ -64,10 +65,11 @@ const EditBlog = () => {
         <button
           className="bg-blue-600 w-full p-2 rounded-md text-white mt-2 cursor-pointer"
           onClick={handleEdit}
+          type="submit"
         >
           Submit
         </button>
-      </div>
+      </form>
     </div>
   );
 };

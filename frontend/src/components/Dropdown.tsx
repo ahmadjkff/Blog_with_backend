@@ -47,7 +47,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="border border-black p-3 rounded-md w-full text-start text-gray-500"
+        className={`border border-black p-3 rounded-md w-full text-start ${placeholder !== "Category" || selected ? "text-black" : "text-gray-500"}`}
       >
         {selected ? selected.label : placeholder}
       </button>

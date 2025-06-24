@@ -5,6 +5,7 @@ import {
   addBlog,
   getBlog,
   getBlogs,
+  getBlogsCategory,
   getMyBlogs,
   modifyBlog,
   removeBlog,
@@ -138,6 +139,20 @@ router.delete(
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
+router.get(
+  "/category/:category",
+  validateJWT,
+  async (req: IExtendRequest, res) => {
+    try {
+      const { category } = req.params;
+      const { data, statusCode } = await getBlogsCategory(category);
+      res.status(statusCode).send(data);
+    } catch (error) {
+      res.status(500).send("Internal server error");
     }
   }
 );

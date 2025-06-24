@@ -135,3 +135,14 @@ export const removeBlog = async ({ blogId }: IRemoveBlog) => {
     return { data: "Something went wrong", statusCode: 500 };
   }
 };
+
+export const getBlogsCategory = async (category: string) => {
+  try {
+    const blogs = await blogModel
+      .find({ category })
+      .populate("authorId", "username");
+    return { data: blogs, statusCode: 200 };
+  } catch (error) {
+    return { data: "Something went wrong", statusCode: 500 };
+  }
+};

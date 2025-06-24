@@ -25,6 +25,7 @@ interface BlogContextType {
     category: string,
     img: string
   ) => Promise<boolean | undefined>;
+  filterBlogsByCategory: (category: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -198,6 +199,30 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const filterBlogsByCategory = async (category: string) => {
+    try {
+      if (!category) {
+        fetchblogs();
+        return;
+      }
+      const response = await fetch(`${API_URL}/blog/category/${category}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        setError("Failed to filter blogs by category");
+        return;
+      }
+
+      const data = await response.json();
+      setBlogs(data);
+      setError(null);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to filter blogs by category: ", error);
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -212,6 +237,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
         fetchBlog,
         deleteBlog,
         editBlog,
+        filterBlogsByCategory,
       }}
     >
       {children}

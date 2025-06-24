@@ -5,19 +5,24 @@ import Dropdown from "../components/Dropdown";
 import { CATEGORY_OPTIONS } from "../constants/dropdownOptions";
 
 const BlogList = () => {
-  const { fetchblogs, blogs, error } = useBlog();
+  const { fetchblogs, blogs, error, filterBlogsByCategory } = useBlog();
 
   useEffect(() => {
     fetchblogs();
-  }, [blogs]);
+  }, []);
+
+  const handleCategoryFilter = (option: { label: string; value: string }) => {
+    filterBlogsByCategory(option.value);
+  };
 
   return (
     <div className="flex flex-col gap-10 my-10 px-24">
       <div className="flex justify-end ">
         <Dropdown
           placeholder="Category"
-          options={CATEGORY_OPTIONS}
+          options={[{ label: "Category", value: "" }, ...CATEGORY_OPTIONS]}
           styles="w-48"
+          onSelect={handleCategoryFilter}
         />
       </div>
       <div className="flex flex-wrap gap-4 justify-center sm:flex-col sm:items-center md:flex-row ">

@@ -6,12 +6,14 @@ interface IOption {
 }
 
 interface DropdownProps {
+  styles?: string;
   options?: IOption[];
   placeholder?: string;
   onSelect?: (option: IOption) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
+  styles,
   options = [],
   placeholder = "Select",
   onSelect,
@@ -41,7 +43,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className={styles || "relative w-full"} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}

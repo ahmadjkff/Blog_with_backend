@@ -55,7 +55,9 @@ export const getMyBlogs = async ({ userId }: IGetMyBlogs) => {
   try {
     if (!userId) return { data: "User is not found", statusCode: 400 };
 
-    const myBlogs = await blogModel.find({ authorId: userId });
+    const myBlogs = await blogModel
+      .find({ authorId: userId })
+      .populate("authorId", "username");
 
     return { data: myBlogs, statusCode: 200 };
   } catch (error) {

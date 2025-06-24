@@ -1,8 +1,9 @@
+import { IExtendRequest } from "./../types/extendedRequest";
 import express from "express";
 import { validateJWT } from "../middlewares/validateJWT";
-import { IExtendRequest } from "../types/extendedRequest";
 import {
   addBlog,
+  clapBlog,
   getBlog,
   getBlogs,
   getBlogsCategory,
@@ -110,6 +111,18 @@ router.put(
     }
   }
 );
+
+router.put("/clap/:blogId", validateJWT, async (req: IExtendRequest, res) => {
+  try {
+    const { blogId } = req.params;
+    const { data, statusCode } = await clapBlog(blogId);
+
+    res.status(statusCode).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
 
 router.delete(
   "/:blogId",

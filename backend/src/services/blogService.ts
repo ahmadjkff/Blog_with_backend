@@ -146,3 +146,21 @@ export const getBlogsCategory = async (category: string) => {
     return { data: "Something went wrong", statusCode: 500 };
   }
 };
+
+export const clapBlog = async (blogId: string) => {
+  try {
+    const blog = await blogModel.findById(blogId);
+
+    if (!blog) {
+      return { data: "Blog not found", statusCode: 404 };
+    }
+
+    blog.claps = (blog.claps || 0) + 1;
+    await blog.save();
+
+    return { data: blog, statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+    return { data: "Something went wrong", statusCode: 500 };
+  }
+};

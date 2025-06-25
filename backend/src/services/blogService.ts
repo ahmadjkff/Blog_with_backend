@@ -150,29 +150,18 @@ export const getBlogsCategory = async (category: string) => {
 export const clapBlog = async (blogId: string, userId: string) => {
   try {
     const blog = await blogModel.findById(blogId);
+    if (!blog) return { data: "Blog not found", statusCode: 404 };
 
-    if (!blog) {
-      return { data: "Blog not found", statusCode: 404 };
-    }
-
-    // Initialize claps array if it doesn't exist
-    if (!blog.claps) {
-      blog.claps = [];
-    }
-
-    // Check if user already clapped
-    const existingClapIndex = blog.claps.findIndex((clap) => clap === userId);
-
-    if (existingClapIndex !== -1) {
-      // User already clapped, remove their clap (toggle off)
-      blog.claps.splice(existingClapIndex, 1);
-    } else {
-      // User hasn't clapped before, add new entry (toggle on)
+    blog.claps = blog.claps || [];
+    const index = blog.claps.findIndex(
+      (id) => id.toString() === userId.toString()
+    );
+    if (index === -1) {
       blog.claps.push(userId);
+    } else {
+      blog.claps.splice(index, 1);
     }
-
     await blog.save();
-
     return { data: blog, statusCode: 200 };
   } catch (error) {
     console.error(error);

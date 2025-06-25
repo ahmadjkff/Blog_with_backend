@@ -26,9 +26,6 @@ function Card({
   const { deleteBlog, fetchBlog, clapBlog } = useBlog();
   const navigate = useNavigate();
 
-  // Calculate total claps from the array
-  const totalClaps = Array.isArray(claps) ? claps.length : claps || 0;
-
   const handleDelete = async (id: string) => {
     deleteBlog(id);
   };
@@ -64,7 +61,7 @@ function Card({
               handleClap();
             }}
           />
-          <p className="text-blue-700">{totalClaps}</p>
+          <p className="text-blue-700">{claps.length}</p>
         </div>
       </div>
       <h2 className="font-bold text-start">{title}</h2>

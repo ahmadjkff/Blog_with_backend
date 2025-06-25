@@ -61,7 +61,7 @@ function Card({
               handleClap();
             }}
           />
-          <p className="text-blue-700">{claps.length}</p>
+          <p className="text-blue-700">{claps?.length}</p>
         </div>
       </div>
       <h2 className="font-bold text-start">{title}</h2>

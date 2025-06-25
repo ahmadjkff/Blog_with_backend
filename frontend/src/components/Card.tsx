@@ -10,7 +10,7 @@ interface ICardProps {
   createdAt: string;
   id: string;
   authorName: string;
-  claps: string[] | number;
+  claps: Array<string>;
 }
 
 function Card({

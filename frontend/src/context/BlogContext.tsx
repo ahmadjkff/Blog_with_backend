@@ -26,6 +26,7 @@ interface BlogContextType {
     img: string
   ) => Promise<boolean | undefined>;
   filterBlogsByCategory: (category: string) => void;
+  clapBlog: (blogId: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -37,6 +38,7 @@ export interface Blog {
   category: string;
   img?: string | undefined;
   createdAt: string;
+  claps: Array<string>;
   authorId: {
     username: string;
     _id: string;
@@ -223,6 +225,31 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const clapBlog = async (blogId: string) => {
+    try {
+      if (!blogId) {
+        setError("blog not found");
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/blog/clap/${blogId}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        setError("unable to clap blog");
+        return;
+      }
+
+      setError(null);
+      fetchblogs();
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to filter blogs by category: ", error);
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -238,6 +265,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
         deleteBlog,
         editBlog,
         filterBlogsByCategory,
+        clapBlog,
       }}
     >
       {children}

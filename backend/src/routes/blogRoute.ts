@@ -115,7 +115,14 @@ router.put(
 router.put("/clap/:blogId", validateJWT, async (req: IExtendRequest, res) => {
   try {
     const { blogId } = req.params;
-    const { data, statusCode } = await clapBlog(blogId);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      res.status(401).send("User not authenticated");
+      return;
+    }
+
+    const { data, statusCode } = await clapBlog(blogId, userId);
 
     res.status(statusCode).send(data);
   } catch (error) {

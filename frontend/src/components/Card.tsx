@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useBlog } from "../context/BlogContext";
 import { useUser } from "../context/userContext";
 import { PiHandsClappingFill } from "react-icons/pi";
-import { useState } from "react";
 
 interface ICardProps {
   title: string;
@@ -11,6 +10,7 @@ interface ICardProps {
   createdAt: string;
   id: string;
   authorName: string;
+  claps: string[] | number;
 }
 
 function Card({
@@ -20,11 +20,14 @@ function Card({
   createdAt,
   id,
   authorName,
+  claps,
 }: ICardProps) {
   const { isAdmin } = useUser();
-  const { deleteBlog, fetchBlog } = useBlog();
+  const { deleteBlog, fetchBlog, clapBlog } = useBlog();
   const navigate = useNavigate();
-  const [claps, setClaps] = useState<number>(0);
+
+  // Calculate total claps from the array
+  const totalClaps = Array.isArray(claps) ? claps.length : claps || 0;
 
   const handleDelete = async (id: string) => {
     deleteBlog(id);
@@ -38,9 +41,7 @@ function Card({
   };
 
   const handleClap = () => {
-    console.log("claps");
-
-    setClaps(claps + 1);
+    clapBlog(id);
   };
 
   return (
@@ -63,7 +64,7 @@ function Card({
               handleClap();
             }}
           />
-          <p className="text-blue-700">{claps}</p>
+          <p className="text-blue-700">{totalClaps}</p>
         </div>
       </div>
       <h2 className="font-bold text-start">{title}</h2>

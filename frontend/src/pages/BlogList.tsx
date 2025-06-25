@@ -36,6 +36,7 @@ const BlogList = () => {
               blogImg={blog.img}
               createdAt={new Date(blog.createdAt).toLocaleDateString()}
               authorName={blog.authorId.username}
+              claps={blog.claps}
             />
           ))
         ) : (

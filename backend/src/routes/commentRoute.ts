@@ -20,9 +20,9 @@ router.post("/", validateJWT, async (req: IExtendRequest, res) => {
   }
 });
 
-router.get("/", validateJWT, async (req: IExtendRequest, res) => {
+router.get("/:blogId", validateJWT, async (req: IExtendRequest, res) => {
   try {
-    const { blogId } = req.body;
+    const { blogId } = req.params;
     const { data, statusCode } = await getComments(blogId);
 
     res.status(statusCode).json(data);

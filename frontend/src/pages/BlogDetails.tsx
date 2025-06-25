@@ -3,13 +3,16 @@ import blogImage from "../assets/blogImage.png";
 import blogImage2 from "../assets/blogImage2.png";
 import { useBlog } from "../context/BlogContext";
 import { useParams } from "react-router-dom";
+import Comments from "../components/Comments";
 
 const BlogDetails = () => {
   const { blog, fetchBlog } = useBlog();
   const { id } = useParams();
 
   useEffect(() => {
-    if (id) fetchBlog(id);
+    if (id) {
+      fetchBlog(id);
+    }
   }, []);
 
   if (!blog) return <>Cannot find blog</>;
@@ -88,6 +91,7 @@ const BlogDetails = () => {
           <h2 className="font-bold text-xl mt-8">Conclusion:</h2>
           <p className="mt-4 text-gray-600">{blog.content}</p>
         </div>
+        <Comments id={id} />
       </div>
     </div>
   );

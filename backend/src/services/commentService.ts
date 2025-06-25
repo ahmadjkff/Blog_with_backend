@@ -16,9 +16,12 @@ export const addComment = async (
   }
 };
 
-export const getComments = async (blogId: ObjectId) => {
+export const getComments = async (blogId: string) => {
   try {
-    const comments = await commentModel.find({ blogId: blogId }).lean();
+    const comments = await commentModel
+      .find({ blogId: blogId })
+      .lean()
+      .populate("authorId", "username");
     return { data: comments, statusCode: 200 };
   } catch (error) {
     console.error(error);

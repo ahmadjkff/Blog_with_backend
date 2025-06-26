@@ -10,9 +10,7 @@ const BlogDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    if (id) {
-      fetchBlog(id);
-    }
+    if (id) fetchBlog(id);
   }, []);
 
   if (!blog) return <>Cannot find blog</>;

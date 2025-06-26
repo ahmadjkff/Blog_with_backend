@@ -3,3 +3,7 @@
 @theme {
   --breakpoint-xs: 350px;
 }
+
+button {
+  cursor: pointer;
+}

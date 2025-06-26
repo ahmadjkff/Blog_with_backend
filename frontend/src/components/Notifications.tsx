@@ -100,7 +100,7 @@ const Notifications = () => {
               </div>
 
               <p className="text-gray-500">
-                {new Date(notification.createdAt).toLocaleDateString()}
+                {new Date(notification.createdAt).toLocaleString()}
               </p>
             </li>
           ))}

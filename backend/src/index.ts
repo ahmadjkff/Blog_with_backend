@@ -20,7 +20,7 @@ mongoose
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
 app.use("/comment", commentRoute);
-app.use("/notification", notificationRoute);
+app.use("/notifications", notificationRoute);
 
 app.listen(port, () => {
   console.log(`connected to port ${port}`);

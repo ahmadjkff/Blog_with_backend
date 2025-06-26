@@ -41,6 +41,10 @@ function Card({
     clapBlog(id);
   };
 
+  const randomImg = () => {
+    return Math.floor(Math.random() * 1000);
+  };
+
   return (
     <Link
       to={`/blog/${id}`}
@@ -69,7 +73,7 @@ function Card({
         <div className="flex  gap-2 items-center">
           <img
             className="rounded-full w-9 h-9"
-            src="https://i.pravatar.cc/40"
+            src={`https://i.pravatar.cc/${randomImg()}`}
             alt="placeholder"
           />
           <p className="mt-1">{authorName}</p>

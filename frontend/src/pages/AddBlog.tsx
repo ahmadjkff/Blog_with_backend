@@ -36,12 +36,10 @@ const AddBlog = () => {
         navigate("/");
       }, 500);
     }
-    console.log(contextError);
   };
 
   const handleCategory = (option: { label: string; value: string }) => {
     setCategory(option.value);
-    console.log(option.value);
   };
 
   return (

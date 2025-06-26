@@ -3,7 +3,7 @@ import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import AvatarDropdown from "./AvatarDropdown";
-import { IoIosNotifications } from "react-icons/io";
+import Notifications from "./Notifications";
 
 function Header() {
   const { isAuthenticated } = useUser();
@@ -24,7 +24,7 @@ function Header() {
       </Link>
 
       <div className="flex items-center gap-2">
-        <IoIosNotifications size={25} />
+        <Notifications />
 
         <div className="relative">
           <input

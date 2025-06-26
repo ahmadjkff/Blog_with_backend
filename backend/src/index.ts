@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import userRoute from "./routes/userRoute";
 import blogRoute from "./routes/blogRoute";
 import commentRoute from "./routes/commentRoute";
+import notificationRoute from "./routes/notificationRoute";
 import cors from "cors";
 
 const app = express();
@@ -19,6 +20,7 @@ mongoose
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
 app.use("/comment", commentRoute);
+app.use("/notification", notificationRoute);
 
 app.listen(port, () => {
   console.log(`connected to port ${port}`);

@@ -1,5 +1,6 @@
 import { ObjectId } from "mongoose";
 import blogModel from "../models/blogModel";
+import { newBlogNotification } from "./notificationService";
 
 interface IAddBlogParams {
   title: string;
@@ -30,6 +31,7 @@ export const addBlog = async ({
     });
 
     await newBlog.save();
+    newBlogNotification(title, authorId, newBlog);
     return { data: newBlog, statusCode: 201 };
   } catch (error) {
     console.error(error);

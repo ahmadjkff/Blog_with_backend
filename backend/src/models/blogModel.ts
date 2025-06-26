@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, ObjectId } from "mongoose";
 
-interface IBlog extends Document {
+export interface IBlog extends Document {
   title: string;
   content: string;
   category: string;

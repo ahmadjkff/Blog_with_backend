@@ -31,7 +31,7 @@ export const addBlog = async ({
     });
 
     await newBlog.save();
-    newBlogNotification(title, authorId, newBlog);
+    newBlogNotification(title, newBlog);
     return { data: newBlog, statusCode: 201 };
   } catch (error) {
     console.error(error);

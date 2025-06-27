@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", validateJWT, async (req: IExtendRequest, res) => {
   const notifications = await notificationModel
-    .find({ userId: req.user?._id })
+    .find({ userId: req.user._id })
     .sort({ createdAt: -1 });
   res.status(200).json(notifications);
 });

@@ -48,7 +48,7 @@ export interface Blog {
 export function BlogProvider({ children }: { children: ReactNode }) {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [myBlogs, setMyBlogs] = useState<Blog[]>([]);
-  const [blog, setBlog] = useState<Blog>();
+  const [blog, setBlog] = useState<Blog | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const API_URL = import.meta.env.VITE_API_URL;
   const { token } = useUser();
@@ -130,6 +130,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
 
       if (!response.ok) {
         setError("failed to get the blog");
+        setBlog(undefined);
         return;
       }
 

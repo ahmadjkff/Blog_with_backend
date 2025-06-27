@@ -36,17 +36,21 @@ const Notifications = () => {
     fetchNotifications();
   }, [blogs]);
 
-  const handleIsRead = async (id: string) => {
+  const handleIsRead = async (id: string, isRead?: boolean) => {
     await fetch(`${API_URL}/notifications/${id}/read`, {
       method: "PUT",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isRead }),
     });
     await fetchNotifications();
   };
 
   const handleSelect = (blogId: string, notificationId: string) => {
     navigate(`/blog/${blogId}`);
-    handleIsRead(notificationId);
+    handleIsRead(notificationId, true);
   };
 
   useEffect(() => {

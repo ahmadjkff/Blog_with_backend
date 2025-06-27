@@ -18,9 +18,10 @@ router.put("/:id/read", validateJWT, async (req: IExtendRequest, res) => {
     res.status(404).send("Notification not found");
     return;
   }
+  const { isRead } = req.body;
   const newIsRead = !notification.isRead;
   await notificationModel.findByIdAndUpdate(req.params.id, {
-    isRead: newIsRead,
+    isRead: isRead ? isRead : newIsRead,
   });
   res.status(200).send(`Marked as ${newIsRead ? "read" : "unread"}`);
 });

@@ -13,7 +13,17 @@ const BlogDetails = () => {
     if (id) fetchBlog(id);
   }, [id]);
 
-  if (!blog) return <>Cannot find blog</>;
+  if (!blog) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "2rem", color: "#888" }}>
+        <h2>Blog Not Found</h2>
+        <p>The blog you are looking for does not exist or has been removed.</p>
+        <a href="/" style={{ color: "#007bff", textDecoration: "underline" }}>
+          Go back to Home
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center my-10">

@@ -73,7 +73,11 @@ const Notifications = () => {
     <div ref={dropdownRef}>
       <IoIosNotifications
         size={25}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
         className="cursor-pointer"
         fill={newNotification ? "red" : "black"}
       />
@@ -90,7 +94,13 @@ const Notifications = () => {
             >
               <div className="flex justify-between items-center">
                 {notification.message}
-                <button onClick={() => handleIsRead(notification._id)}>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleIsRead(notification._id);
+                  }}
+                >
                   {notification.isRead ? (
                     <HiOutlineMailOpen size={20} />
                   ) : (
